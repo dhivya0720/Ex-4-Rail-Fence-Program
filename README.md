@@ -21,5 +21,7 @@ STEP-5: Read the characters row wise or column wise in the former order to get t
 # PROGRAM
 
 # OUTPUT
+![Output Screenshot](<img width="1920" height="1080" alt="Screenshot (108)" src="https://github.com/user-attachments/assets/f60e68f0-376b-4aa9-a6ed-91b0e1567ae0" />
+)
 
 # RESULT
