@@ -26,52 +26,122 @@ STEP-5: Read the characters row wise or column wise in the former order to get t
 
 int main()
 {
-    char text[100], rail[10][100] = {0};
-    int i, j, len, key, row = 0, dir = 1;
+    char text[100], cipher[100], decrypt[100];
+    char rail[10][100];
+    int mark[10][100];
+    int rails, len;
+    int i, j, row, dir, index;
 
-    printf("Enter the plain text: ");
-    scanf("%99s", text);
+  
+
+    printf("\nEnter the input string: ");
+    fgets(text, sizeof(text), stdin);
+    text[strcspn(text, "\n")] = '\0';
 
     printf("Enter the number of rails: ");
-    scanf("%d", &key);
+    scanf("%d", &rails);
 
     len = strlen(text);
 
-    if (key < 2 || key > len || key > 10)
+    // Initialize rail matrix
+    for(i = 0; i < rails; i++)
     {
-        printf("Invalid key value\n");
-        return 0;
+        for(j = 0; j < len; j++)
+        {
+            rail[i][j] = '\0';
+            mark[i][j] = 0;
+        }
     }
 
-    for (i = 0; i < len; i++)
+    // ---------------- Encryption ----------------
+    row = 0;
+    dir = 1;
+
+    for(i = 0; i < len; i++)
     {
         rail[row][i] = text[i];
 
-        if (row == 0)
+        if(row == 0)
             dir = 1;
-        else if (row == key - 1)
+        else if(row == rails - 1)
             dir = -1;
 
         row += dir;
     }
 
-    printf("Encrypted text: ");
-
-    for (i = 0; i < key; i++)
+    index = 0;
+    for(i = 0; i < rails; i++)
     {
-        for (j = 0; j < len; j++)
+        for(j = 0; j < len; j++)
         {
-            if (rail[i][j] != 0)
-                printf("%c", rail[i][j]);
+            if(rail[i][j] != '\0')
+            {
+                cipher[index++] = rail[i][j];
+            }
+        }
+    }
+    cipher[index] = '\0';
+
+    printf("\nCipher text after applying rail fence: %s\n", cipher);
+
+    // ---------------- Decryption ----------------
+
+    // Mark zigzag positions
+    row = 0;
+    dir = 1;
+
+    for(i = 0; i < len; i++)
+    {
+        mark[row][i] = 1;
+
+        if(row == 0)
+            dir = 1;
+        else if(row == rails - 1)
+            dir = -1;
+
+        row += dir;
+    }
+
+    // Fill marked positions with cipher text
+    index = 0;
+    for(i = 0; i < rails; i++)
+    {
+        for(j = 0; j < len; j++)
+        {
+            if(mark[i][j])
+            {
+                rail[i][j] = cipher[index++];
+            }
         }
     }
 
-    printf("\n");
+    // Read in zigzag order
+    row = 0;
+    dir = 1;
+
+    for(i = 0; i < len; i++)
+    {
+        decrypt[i] = rail[row][i];
+
+        if(row == 0)
+            dir = 1;
+        else if(row == rails - 1)
+            dir = -1;
+
+        row += dir;
+    }
+
+    decrypt[len] = '\0';
+
+    printf("\nText after decryption: %s\n", decrypt);
+
     return 0;
 }
 ```
 
 # OUTPUT
-<img width="1920" height="1080" alt="Screenshot (108)" src="https://github.com/user-attachments/assets/9bb96f7e-50c7-4c06-abec-a9895faa9b28" />
+<img width="711" height="420" alt="image" src="https://github.com/user-attachments/assets/c87a2ed2-26bb-4b4a-813b-3731c494b1d1" />
+
 
 # RESULT
+The rail fence transportation technique is successfully implemented using c porgram.
